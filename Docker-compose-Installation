@@ -1,0 +1,8 @@
+# Instaling docker-compose-plugin
+curl -L https://github.com/docker/compose/releases/download/1.12.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+
+# Checking Version of Docker-compose
+docker-compose --version  
+
+#Giving permission to docker-compose executable file
+sudo chmod +x /usr/local/bin/docker-compose

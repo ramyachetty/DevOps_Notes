@@ -22,7 +22,7 @@ STEP-5: CREATE INFRA SETUP
 		TO ENABLE VERSION: aws s3api put-bucket-versioning --bucket ramya.k8s.local --region us-east-1 --versioning-configuration Status=Enabled
 		EXPORT CLUSTER DATA INTO BUCKET: export KOPS_STATE_STORE=s3://ramya.k8s.local
 		GENERATE-KEY: ssh-keygen ----- skip	
-	TO CREATE CLUSTER: kops create cluster --name ramya.k8s.local --zones ap-south-1 --master-size t2.medium --node-size t2.micro --master-count 1 --node-count 2
+	TO CREATE CLUSTER: kops create cluster --name ramya.k8s.local --zones ap-south-1 --control-plane-size t2.medium --node-size t2.micro --control-plane-count 1 --node-count 2
 		TO SEE THE CLUSTER: kops get cluster
 		IF YOU WANT TO EDIT THE CLUSTER: kops edit cluster cluster_name
 		TO RUN THE CLUSTER: kops update cluster --name ramya.k8s.local --yes --admin

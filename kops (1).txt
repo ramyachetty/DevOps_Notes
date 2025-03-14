@@ -1,0 +1,109 @@
+STEP-1: LAUNCH INSTANCE WITH T2.MICRO AND 20 GB SSD
+STEP-2: INSTALL AWS CLI
+		curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+		unzip awscliv2.zip
+		sudo ./aws/install
+		TO  CHECK VERSION: /usr/local/bin/aws --version
+		TO SET PATH: vim .bashrc
+				 export PATH=$PATH:/usr/local/bin/
+			   on ec2 - source .bashrc
+		                    aws --version
+STEP-3: INSTALL KOPS & KUBECTL
+		curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+		wget https://github.com/kubernetes/kops/releases/download/v1.24.1/kops-linux-amd64
+		PERMISSIONS: chmod +x kops-linux-amd64 kubectl
+		MOVE FILES:  mv kubectl /usr/local/bin/kubectl
+		MOVE FILES:  mv kops-linux-amd64  /usr/local/bin/kops
+		TO SEE VERSION: kubectl version & kops version
+STEP-4: CREATE IAM ROLE WITH ADMIN PERMISSIONS AND ATTACH IT TO OUR INSTANCE,
+	SELECT INSTANCE >>> ACTIONS >>> SECURITY >>>> MODIFY IAM ROLE
+STEP-5: CREATE INFRA SETUP
+		TO CREATE BUCKET: aws s3api create-bucket --bucket ramya.k8s.local --region us-east-1
+		TO ENABLE VERSION: aws s3api put-bucket-versioning --bucket ramya.k8s.local --region us-east-1 --versioning-configuration Status=Enabled
+		EXPORT CLUSTER DATA INTO BUCKET: export KOPS_STATE_STORE=s3://ramya.k8s.local
+		GENERATE-KEY: ssh-keygen ----- skip	
+	TO CREATE CLUSTER: kops create cluster --name ramya.k8s.local --zones ap-south-1 --master-size t2.medium --node-size t2.micro --master-count 1 --node-count 2
+		TO SEE THE CLUSTER: kops get cluster
+		IF YOU WANT TO EDIT THE CLUSTER: kops edit cluster cluster_name
+		TO RUN THE CLUSTER: kops update cluster --name ramya.k8s.local --yes --admin
+STEP-6: CREATE PODS
+		TO CREATE A POD: kops update cluster --name ramya.k8s.local --yes --admin
+		TO CHECK THE PODS: kubectl get pods
+		TO CHECK THE POD IS RUNNING WHERE:  kubectl get pods -o wide
+		TO CREATE A CONTIANER: 
+========================
+vim pod-nginx.yml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+================
+		TO DELETE EXISTING POD: kubectl delete pod nginx
+		TO CREATE A POD: kubectl create -f pod-nginx.yml
+		TO DEPLOY POD: we need to delete existing pod (kubectl delete pod nginx) & write the code for deployment
+============================================================
+
+    
+
+Suggestions:
+ * list clusters with: kops get cluster
+ * edit this cluster with: kops edit cluster ramya.k8s.local
+ * edit your node instance group: kops edit ig --name=ramya.k8s.local nodes-us-east-1a
+ * edit your control-plane instance group: kops edit ig --name=ramya.k8s.local control-plane-us-east-1a
+
+Finally configure your cluster with: kops update cluster --name ramya.k8s.local --yes --admin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+
+
+

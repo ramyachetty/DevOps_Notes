@@ -1,0 +1,13 @@
+install Kubectl
+Install awscli 
+Install eksctl 
+COMMANDS: 
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+mv /tmp/eksctl /usr/local/bin
+eksctl version
+
+
+Configure credentials (admin access)
+Create eks : eksctl create cluster --name cluster-name --region region-name  --fargate ------ (not recommended)
+
+eksctl create cluster --name cluster-name --region region-name  --nodes 3
